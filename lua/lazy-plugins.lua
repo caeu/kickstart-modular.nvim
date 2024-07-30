@@ -20,29 +20,28 @@ require('lazy').setup({
   -- Use `opts = {}` to force a plugin to be loaded.
   --
 
-
   -- modular approach: using `require 'path/name'` will
   -- include a plugin definition from file lua/path/name.lua
 
-  require 'kickstart/plugins/gitsigns',
+  require 'kickstart/plugins/gitsigns', -- kickstart/plugins/gitsigns.lua
 
-  require 'kickstart/plugins/which-key',
+  require 'kickstart/plugins/which-key', -- kickstart/plugins/which-key.lua
 
-  require 'kickstart/plugins/telescope',
+  require 'kickstart/plugins/telescope', -- kickstart/plugins/telescope.lua
 
-  require 'kickstart/plugins/lspconfig',
+  require 'kickstart/plugins/lspconfig', -- kickstart/plugins/lspconfig.lua
 
-  require 'kickstart/plugins/conform',
+  require 'kickstart/plugins/conform', -- kickstart/plugins/conform.lua
 
-  require 'kickstart/plugins/cmp',
+  require 'kickstart/plugins/cmp', -- kickstart/plugins/cmp.lua
 
-  require 'kickstart/plugins/tokyonight',
+  require 'kickstart/plugins/tokyonight', -- kickstart/plugins/tokyonight.lua
 
-  require 'kickstart/plugins/todo-comments',
+  require 'kickstart/plugins/todo-comments', -- kickstart/plugins/todo-comments.lua
 
-  require 'kickstart/plugins/mini',
+  require 'kickstart/plugins/mini', -- kickstart/plugins/mini.lua
 
-  require 'kickstart/plugins/treesitter',
+  require 'kickstart/plugins/treesitter', -- kickstart/plugins/treesitter.lua
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
@@ -56,15 +55,15 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.autopairs', -- kickstart/plugins/autopairs.lua
+  require 'kickstart.plugins.neo-tree', -- kickstart/plugins/neo-tree.lua
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the

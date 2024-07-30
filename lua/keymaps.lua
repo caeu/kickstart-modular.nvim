@@ -25,11 +25,11 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
---  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+--  See `:help wincmd` for a list of all window commands #czr replaced with tmux-nvim
+-- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -44,5 +44,51 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+-- <D-s> to save in all modes
+vim.keymap.set({ '', '!' }, '<D-s>', function()
+  vim.cmd 'write'
+  print('FILE SAVED: ' .. vim.fn.expand '%:p')
+end)
+
+-- copy paste using <D-s> with system register
+-- paste
+vim.keymap.set({ 'n', 'v' }, '<D-v>', '"+P')
+-- paste
+vim.keymap.set({ 'i', 'c', 't' }, '<D-v>', '<C-r>+')
+-- copy
+vim.keymap.set({ 'v' }, '<D-c>', '"+y')
+
+-- czr- highlight the visual selection after pressing enter.
+-- https://vi.stackexchange.com/questions/20077/automatically-highlight-all-occurrences-of-the-selected-text-in-visual-mode
+vim.cmd [[
+  xnoremap <silent> <cr> "*y:silent! let searchTerm = '\V' .substitute(escape(@*, '\/'), "\n", '\\n', "g") <bar> let @/ = searchTerm <bar> echo '/'.@/ <bar> call histadd("search", searchTerm) <bar> set hls<cr>
+]]
+-- Give ctrl+q a job when it is otherwise being wasted!
+-- Now it toggles `hlsearch` while in NORMAL mode:
+vim.cmd [[
+  nnoremap <silent> <c-q> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
+]]
+
+-- to use :DiffOrig to the show the difference between the edited buffer and the last saved point of the file
+vim.cmd [[
+if !exists(":DiffOrig")
+    command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+          \ | wincmd p | diffthis
+endif
+]]
+
+-- Put <enter> to work too! Otherwise <enter> moves to the next line, which we can
+-- already do by pressing the <j> key, which is a waste of keys!
+-- Be useful <enter> key! Highlight all instances of the underlying word:
+vim.cmd [[
+  nnoremap <silent> <cr> :let searchTerm = '\v<'.expand("<cword>").'>' <bar> let @/ = searchTerm <bar> echo '/'.@/ <bar> call histadd("search", searchTerm) <bar> set hls<cr>
+]]
+
+-- restore cursor after leaving neovim
+--  https://github.com/neovim/neovim/issues/4396#issuecomment-1377191592
+vim.cmd [[
+autocmd VimLeave * set guicursor= | call chansend(v:stderr, "\x1b[ q")
+]]
 
 -- vim: ts=2 sts=2 sw=2 et

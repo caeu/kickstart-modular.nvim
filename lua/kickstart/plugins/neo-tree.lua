@@ -20,6 +20,8 @@ return {
           ['\\'] = 'close_window',
         },
       },
+      -- needed for yazi
+      hijack_netrw_bahavior = 'disabled',
     },
   },
 }
